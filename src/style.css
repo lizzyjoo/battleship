@@ -1,0 +1,67 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.boards {
+  display: flex;
+  gap: 20px;
+}
+.gameboard {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  position: relative;
+}
+
+.cell {
+  background-color: #809fcb;
+  border: 1px solid #fff;
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+  position: relative;
+}
+
+.cell:hover {
+  background-color: #2e4668;
+  cursor: crosshair;
+  transition: all 0.3s ease 0s;
+}
+
+.svg-div {
+  display: flex;
+  overflow: hidden;
+  position: absolute; /* Absolute positioning to overlay cells */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Make sure the SVG doesn’t interfere with mouse events */
+  z-index: 1; /* Ensure the SVG is above the cells */
+}
+
+.ship-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.svg-div .y {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: auto;
+  height: 100%;
+  transform: translate(-50%, -50%) rotate(90deg); /* Center and rotate */
+  transform-origin: center;
+}
+
+.sunk-ship {
+  filter: grayscale(80%) brightness(0) invert(1) sepia(100%) hue-rotate(180deg)
+    saturate(10000%) contrast(0.8);
+}
+
+.clicked {
+  pointer-events: none;
+}
