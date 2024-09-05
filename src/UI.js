@@ -9,11 +9,51 @@ export class UI {
   constructor(game) {
     this.game = game;
     // this.setupEventListeners();
+    this.userTurn = true;
   }
 
   initialize() {
+    this.setDOMElements();
+    this.updateUI();
     this.domElements();
     this.setupEventListeners();
+  }
+
+  setDOMElements() {
+    const container = document.querySelector(".container");
+    console.log("does container exist?", container);
+    const pageContent = document.createElement("div");
+    pageContent.className = "page-content";
+
+    // game message
+    const gameMsg = document.createElement("div");
+    gameMsg.classList.add("gameMsg");
+    pageContent.appendChild(gameMsg);
+
+    // div for user & cpu board
+    const boards = document.createElement("div");
+    boards.classList.add("boards");
+
+    // user div
+    const userDiv = document.createElement("div");
+    userDiv.classList.add("user");
+    const userBoard = document.createElement("div");
+    userBoard.classList.add("gameboard");
+    userBoard.id = "player-one-board";
+    userDiv.appendChild(userBoard);
+    userDiv;
+    boards.appendChild(userDiv);
+    // cpu div
+    const cpuDiv = document.createElement("div");
+    cpuDiv.classList.add("cpu");
+    const cpuBoard = document.createElement("div");
+    cpuBoard.classList.add("gameboard");
+    cpuBoard.id = "player-two-board";
+    cpuDiv.appendChild(cpuBoard);
+    boards.appendChild(cpuDiv);
+
+    pageContent.appendChild(boards);
+    container.appendChild(pageContent);
   }
   domElements() {
     this.userCells = document.querySelectorAll("#player-one-board .cell");
@@ -33,6 +73,7 @@ export class UI {
   // render player's board state
   renderBoard(board, elementId) {
     const boardElement = document.getElementById(elementId);
+    console.log("does board element exist", boardElement);
 
     boardElement.innerHTML = ""; // Clear existing content
 
@@ -42,7 +83,12 @@ export class UI {
       const col = i % 10;
       const cell = document.createElement("div");
       cell.classList.add("cell");
-      cell.setAttribute("id", row + "_" + col);
+      if (elementId === "player-two-board") {
+        cell.setAttribute("id", "c" + row + "-" + col);
+      } else {
+        cell.setAttribute("id", "u" + row + "-" + col);
+      }
+
       boardElement.appendChild(cell);
     }
 
@@ -56,7 +102,7 @@ export class UI {
     for (let r = 0; r < board.size; r++) {
       for (let c = 0; c < board.size; c++) {
         const shipElem = grid[r][c];
-        const cellDiv = document.getElementById(r + "_" + c);
+        const cellDiv = document.getElementById(r + "-" + c);
 
         if (shipElem && !shipHead.includes(shipElem.name)) {
           shipHead.push(shipElem.name);
@@ -68,7 +114,7 @@ export class UI {
             shipSVG.src = shipTypePath;
             shipSVG.classList.add("ship-svg", shipClassName);
 
-            const isHorizontal = shipElem.orientation === "x";
+            const isHorizontal = shipElem.orientation === "X";
 
             const svgDiv = document.createElement("div");
             svgDiv.classList.add("svg-div");
@@ -111,6 +157,23 @@ export class UI {
     }
   }
 
+  cpuAttack() {
+    const randomCoordinates = this.game.randomAttack();
+
+    const attackedRow = randomCoordinates.randomRow;
+    const attackedColumn = randomCoordinates.randomColumn;
+    //call handle Attack method?
+    console.log(randomCoordinates);
+    // get the corresponding cell on the user's board
+    const cellId = `${attackedRow}-${attackedColumn}`;
+    console.log("cell id check:", cellId);
+    const playerOneBoard = document.getElementById("player-one-board");
+    console.log(playerOneBoard);
+    const attackedCell = document.getElementById(`u${cellId}`);
+
+    this.handleAttack(attackedCell);
+  }
+
   determineShipClassName(ship) {
     switch (ship.name) {
       case "carrier":
@@ -129,31 +192,40 @@ export class UI {
     }
   }
 
+  // Update game turn; toggle true/false
+  updateTurn() {
+    this.userTurn = !this.userTurn;
+    // user's turn
+    // Cpu's turn
+    if (!this.userTurn) {
+      // computer can make an attack on the user's board
+      // display cpu attack message
+      console.log("CPU makes an attack");
+      this.cpuAttack();
+    }
+  }
+
   // handles events after a cell is clicked for attack
   handleAttack(cell) {
-    console.log("Attack made on:", cell.srcElement.id);
+    let cellID, cellParentBoard;
 
-    const cellID = cell.srcElement.id;
-    const row = cellID[0];
-    const column = cellID[2];
-    const cellParentBoard = cell.srcElement.closest(".gameboard"); // Ensure correct parent is selected
-
-    if (!cellParentBoard) {
-      console.error("Parent board not found.");
-      return;
+    // Check if 'cell' is an Event (from an event listener) or a DOM element
+    if (cell instanceof Event) {
+      const targetCell = cell.target; // Event target
+      cellID = targetCell.id;
+      cellParentBoard = targetCell.closest(".gameboard");
+      targetCell.classList.add("clicked"); // Add 'clicked' class to the event target
+    } else if (cell instanceof HTMLElement) {
+      cellID = cell.id; // Direct DOM element
+      cellParentBoard = cell.closest(".gameboard");
+      cell.classList.add("clicked"); // Add 'clicked' class to the element directly
     }
 
+    const row = cellID[1];
+    const column = cellID[3];
     const attackedBoard = this.game.getBoard(cellParentBoard.id);
-
-    if (!attackedBoard) {
-      console.error("No board found for ID:", cellParentBoard.id);
-      return;
-    }
-
     const hitElem = attackedBoard.grid[row][column];
 
-    // add css class to disable pointer events
-    cell.srcElement.classList.add("clicked");
     // user hits either a ship or a blank cell
     if (hitElem !== null) {
       attackedBoard.attacksMade[row][column] = "hit";
@@ -166,18 +238,25 @@ export class UI {
       }
     } else {
       attackedBoard.attacksMade[row][column] = "missed";
+      attackedBoard.storeMissed(row, column);
     }
 
     this.updateCellUI(row, column, attackedBoard, cellParentBoard.id);
-
     if (this.gameOver()) {
       this.endGame();
     }
+    this.updateTurn();
   }
 
   // Update only the affected cell UI
   updateCellUI(row, column, board, boardId) {
-    const cellDiv = document.getElementById(`${row}_${column}`);
+    let cellDiv;
+    if (boardId === "player-one-board") {
+      cellDiv = document.getElementById(`u${row}-${column}`);
+    } else {
+      cellDiv = document.getElementById(`c${row}-${column}`);
+    }
+
     const attackType = board.attacksMade[row][column];
 
     if (attackType === "hit") {
