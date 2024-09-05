@@ -65,3 +65,20 @@
 .clicked {
   pointer-events: none;
 }
+
+.highlight {
+  background-color: yellow;
+}
+
+.ship-placed {
+  background-color: gray;
+  /* Add any other styling for placed ships */
+}
+
+.invalid-highlight {
+  background-color: red;
+}
+
+#player-one-board {
+  pointer-events: none;
+}
