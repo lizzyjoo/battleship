@@ -224,22 +224,8 @@ export class UI {
     const row = cellID[1];
     const column = cellID[3];
     const attackedBoard = this.game.getBoard(cellParentBoard.id);
-    const hitElem = attackedBoard.grid[row][column];
 
-    // user hits either a ship or a blank cell
-    if (hitElem !== null) {
-      attackedBoard.attacksMade[row][column] = "hit";
-      hitElem.hit();
-      console.log(hitElem.name, " : hit count", hitElem.hits);
-      if (hitElem.isSunk()) {
-        const className = `${hitElem.name}-svg`;
-        const shipImage = cellParentBoard.querySelector(`img.${className}`);
-        shipImage.classList.add("sunk-ship");
-      }
-    } else {
-      attackedBoard.attacksMade[row][column] = "missed";
-      attackedBoard.storeMissed(row, column);
-    }
+    attackedBoard.receiveAttack(row, column, cellParentBoard);
 
     this.updateCellUI(row, column, attackedBoard, cellParentBoard.id);
     if (this.gameOver()) {

@@ -8,6 +8,7 @@ export class Gameboard {
     );
     this.ships = [];
     this.tempGrid = Array.from({ length: size }, () => Array(size).fill(null));
+    this.missed = [];
   }
 
   placeShip(ship, x, y, isVertical) {
@@ -58,8 +59,25 @@ export class Gameboard {
     return true; // Successfully placed the ship
   }
 
-  receiveAttack(attack) {}
+  receiveAttack(row, column, cellParentBoard) {
+    const hitElem = this.grid[row][column];
+    if (hitElem !== null) {
+      this.attacksMade[row][column] = "hit";
+      hitElem.hit();
+      if (hitElem.isSunk()) {
+        const className = `${hitElem.name}-svg`;
+        const shipImage = cellParentBoard.querySelector(`img.${className}`);
+        shipImage.classList.add("sunk-ship");
+      }
+    } else {
+      this.attacksMade[row][column] = "missed";
+      this.storeMissed(row, column);
+    }
+  }
   storeAttack(attack) {}
-  storeMissed(attack) {}
+  storeMissed(row, column) {
+    const missedCoordinate = [row, column];
+    this.missed.push(missedCoordinate);
+  }
   allSunk() {}
 }
