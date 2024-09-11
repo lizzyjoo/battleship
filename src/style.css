@@ -1,10 +1,189 @@
+* {
+  /* font */
+  font-family: "Handjet", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: "ELGR" 1, "ELSH" 2;
+}
+body {
+  background: rgb(118, 122, 93);
+  background: radial-gradient(
+    circle,
+    rgba(118, 122, 93, 1) 0%,
+    rgba(47, 53, 78, 1) 69%
+  );
+  animation: gradient 8s ease-in infinite;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 0;
+  align-items: center;
+}
+
 .container {
   display: flex;
   flex-direction: column;
 }
-
-.boards {
+.page-content {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  font-family: "Rubik Pixels", system-ui;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 100px;
+}
+
+/* name page */
+#main-logo {
+  font-family: "Rubik Pixels", system-ui;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 140px;
+  margin-bottom: 0;
+  opacity: 0; /* Initially hidden */
+  background-image: linear-gradient(
+    to right,
+    #1b1a27,
+    #000000
+  ); /* Gradient effect */
+  background-clip: text; /* Ensures the gradient affects the text */
+  -webkit-background-clip: text;
+  color: transparent; /* Hide the original text color */
+  transition: opacity 2s ease-in-out 1s;
+}
+
+body.loaded #main-logo {
+  opacity: 1; /* Make the text visible */
+}
+
+#name-page {
+  position: relative;
+}
+
+.form-div {
+  position: absolute;
+  top: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40%;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 1000;
+  opacity: 90%;
+  border-radius: 0.75rem;
+  padding: 30px 10px 30px 10px;
+  opacity: 0;
+  transition: opacity 2s ease-in-out 4s;
+}
+body.loaded .form-div {
+  opacity: 1; /* Make the text visible */
+}
+
+.enter-name {
+  font-size: 48px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+#user-name {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  font-size: 30px;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+
+#name-submit,
+#orientation-btn {
+  background-color: #111827;
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  flex: 0 0 auto;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.5rem;
+  padding: 0.75rem 1.2rem;
+  text-align: center;
+  text-decoration: none #6b7280 solid;
+  text-decoration-thickness: auto;
+  transition-duration: 0.2s;
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: auto;
+}
+
+#name-submit:hover,
+#orientation-btn:hover {
+  background-color: #374151;
+}
+
+#name-submit:focus,
+#orientation-btn:focus {
+  box-shadow: none;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+@media (min-width: 768px) {
+  #name-submit,
+  #orientation-btn {
+    padding: 0.75rem 1.5rem;
+  }
+}
+
+#orientation-btn {
+  margin-bottom: 20px;
+}
+
+.battleship-img {
+  opacity: 0;
+  position: absolute;
+  top: 2px;
+  background-image: url("./assets/submarine-art.png");
+  width: 1000px;
+  height: 1000px;
+  background-size: cover;
+  transition: opacity 2s ease-in-out 2s;
+}
+body.loaded .battleship-img {
+  opacity: 1; /* Make the text visible */
+}
+
+/* set ship page */
+
+.instruction {
+  font-size: 40px;
+  padding-bottom: 20px;
+  font-weight: 500;
+  color: #ffffffe3;
+}
+#user-set-ship {
+  width: 600px;
+  height: 600px;
+}
+.boards {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 20px;
 }
 .gameboard {
@@ -15,8 +194,8 @@
 }
 
 .cell {
-  background-color: #809fcb;
-  border: 1px solid #fff;
+  background-color: #162c4c;
+  border: 2px solid #fff;
   padding: 20px;
   font-size: 30px;
   text-align: center;
@@ -24,13 +203,41 @@
 }
 
 .cell:hover {
-  background-color: #2e4668;
+  /* background-color: #2e4668; */
   cursor: crosshair;
   transition: all 0.3s ease 0s;
+}
+#player-two-board .cell:hover {
+  background-color: #96180a;
+}
+/* game page */
+.gameMsg {
+  background-color: none;
+  text-align: center;
+  width: 100%;
+  color: #fff;
+  font-size: 40px;
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: 0.15em; /* Adjust as needed */
+  animation: typing 3.5s steps(40, end), step-start infinite;
+}
+
+/* The typing effect */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
 }
 
 .svg-div {
   display: flex;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
   position: absolute; /* Absolute positioning to overlay cells */
   top: 0;
@@ -58,27 +265,46 @@
 }
 
 .sunk-ship {
-  filter: grayscale(80%) brightness(0) invert(1) sepia(100%) hue-rotate(180deg)
-    saturate(10000%) contrast(0.8);
+  filter: grayscale(100%) brightness(0) sepia(100%) hue-rotate(180deg)
+    saturate(10000%);
 }
 
 .clicked {
   pointer-events: none;
 }
 
-.highlight {
-  background-color: yellow;
+.missed-cell,
+.hit-cell {
+  background-size: 30px;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-.ship-placed {
-  background-color: gray;
-  /* Add any other styling for placed ships */
+.missed-cell {
+  background-image: url("./assets/white-circle.svg");
+}
+.hit-cell {
+  background-image: url("./assets/red-circle.svg");
+}
+
+.highlight {
+  background-color: rgba(130, 221, 156, 0.928);
 }
 
 .invalid-highlight {
   background-color: red;
+  pointer-events: none;
+}
+
+.ship-placed {
+  pointer-events: none;
+  background-color: rgb(4, 28, 60);
 }
 
 #player-one-board {
   pointer-events: none;
+}
+
+#player-one-board,
+#player-two-board {
 }
