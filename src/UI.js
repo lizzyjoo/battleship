@@ -45,7 +45,13 @@ export class UI {
     userBoard.classList.add("gameboard");
     userBoard.id = "player-one-board";
     userDiv.appendChild(userBoard);
-    userDiv;
+
+    // user name label
+    const userBoardName = document.createElement("div");
+    userBoardName.classList.add("board-label");
+    userBoardName.textContent = `${this.userName}`;
+    userDiv.appendChild(userBoardName);
+
     boards.appendChild(userDiv);
     // cpu div
     const cpuDiv = document.createElement("div");
@@ -54,6 +60,11 @@ export class UI {
     cpuBoard.classList.add("gameboard");
     cpuBoard.id = "player-two-board";
     cpuDiv.appendChild(cpuBoard);
+
+    const cpuBoardName = document.createElement("div");
+    cpuBoardName.classList.add("board-label");
+    cpuBoardName.textContent = "CPU";
+    cpuDiv.appendChild(cpuBoardName);
     boards.appendChild(cpuDiv);
 
     pageContent.appendChild(boards);
@@ -217,7 +228,7 @@ export class UI {
       setTimeout(() => {
         this.gameMsg.textContent = `Awaiting orders, Admiral ${this.userName}.`;
         this.resetAnimation(this.gameMsg);
-      }, 1000);
+      }, 1500);
     } else {
       // Delay CPU attack
       setTimeout(() => {
@@ -281,7 +292,7 @@ export class UI {
 
       // Update the turn after the attack and UI update
       this.updateTurn();
-    }, 1000);
+    }, 1500);
   }
 
   // Update only the affected cell UI
