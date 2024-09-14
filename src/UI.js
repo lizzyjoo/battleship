@@ -8,8 +8,10 @@ import { Game } from "./Game.js";
 export class UI {
   constructor(game) {
     this.game = game;
+    this.userName = this.game.userName;
     // this.setupEventListeners();
     this.userTurn = true;
+    this.gameEnded = false;
   }
 
   initialize() {
@@ -21,13 +23,15 @@ export class UI {
 
   setDOMElements() {
     const container = document.querySelector(".container");
-    console.log("does container exist?", container);
+    container.id = "game-container";
     const pageContent = document.createElement("div");
     pageContent.className = "page-content";
+    pageContent.id = "game-page";
 
     // game message
     const gameMsg = document.createElement("div");
     gameMsg.classList.add("gameMsg");
+    gameMsg.textContent = `Awaiting orders, Admiral ${this.userName}.`;
     pageContent.appendChild(gameMsg);
 
     // div for user & cpu board
@@ -56,8 +60,10 @@ export class UI {
     container.appendChild(pageContent);
   }
   domElements() {
+    this.cpuBoard = document.getElementById("player-two-board");
     this.userCells = document.querySelectorAll("#player-one-board .cell");
     this.cpuCells = document.querySelectorAll("#player-two-board .cell");
+    this.gameMsg = document.querySelector(".gameMsg");
   }
   setupEventListeners() {
     if (!this.cpuCells || this.cpuCells.length === 0) {
@@ -73,7 +79,6 @@ export class UI {
   // render player's board state
   renderBoard(board, elementId) {
     const boardElement = document.getElementById(elementId);
-    console.log("does board element exist", boardElement);
 
     boardElement.innerHTML = ""; // Clear existing content
 
@@ -94,15 +99,10 @@ export class UI {
 
     const grid = board.grid;
     const shipHead = [];
-
-    // display attempted attacks with appropriate color labeling
-    const attacks = board.attacksMade;
-
-    // ship placement UI
+    // ship placement UI: only initially display SVGs for the user, not CPU
     for (let r = 0; r < board.size; r++) {
       for (let c = 0; c < board.size; c++) {
         const shipElem = grid[r][c];
-        const cellDiv = document.getElementById(r + "-" + c);
 
         if (shipElem && !shipHead.includes(shipElem.name)) {
           shipHead.push(shipElem.name);
@@ -110,6 +110,12 @@ export class UI {
           const shipSVG = document.createElement("img");
           const shipTypePath = this.determineShipType(shipElem);
           const shipClassName = this.determineShipClassName(shipElem);
+          // make sure cpu elements are hidden unless ship sinks
+          if (elementId === "player-two-board") {
+            if (!shipSVG.classList.contains("sunk-ship")) {
+              shipSVG.classList.add("cpu-hidden");
+            }
+          }
           if (shipTypePath) {
             shipSVG.src = shipTypePath;
             shipSVG.classList.add("ship-svg", shipClassName);
@@ -158,20 +164,24 @@ export class UI {
   }
 
   cpuAttack() {
-    const randomCoordinates = this.game.randomAttack();
+    if (this.gameOver()) {
+      this.endGame();
+      return;
+    }
+    setTimeout(() => {
+      const randomCoordinates = this.game.randomAttack();
+      const attackedRow = randomCoordinates.randomRow;
+      const attackedColumn = randomCoordinates.randomColumn;
 
-    const attackedRow = randomCoordinates.randomRow;
-    const attackedColumn = randomCoordinates.randomColumn;
-    //call handle Attack method?
-    console.log(randomCoordinates);
-    // get the corresponding cell on the user's board
-    const cellId = `${attackedRow}-${attackedColumn}`;
-    console.log("cell id check:", cellId);
-    const playerOneBoard = document.getElementById("player-one-board");
-    console.log(playerOneBoard);
-    const attackedCell = document.getElementById(`u${cellId}`);
+      // Get the corresponding cell on the user's board
+      const cellId = `${attackedRow}-${attackedColumn}`;
+      const attackedCell = document.getElementById(`u${cellId}`);
 
-    this.handleAttack(attackedCell);
+      // Execute the attack after another brief delay (e.g., 1 second)
+      setTimeout(() => {
+        this.handleAttack(attackedCell);
+      }, 1000); // Additional delay for attack execution
+    }, 1500); // Initial delay before showing the attack
   }
 
   determineShipClassName(ship) {
@@ -194,20 +204,45 @@ export class UI {
 
   // Update game turn; toggle true/false
   updateTurn() {
+    if (this.gameOver()) {
+      this.endGame();
+      return;
+    }
+
     this.userTurn = !this.userTurn;
-    // user's turn
-    // Cpu's turn
-    if (!this.userTurn) {
-      // computer can make an attack on the user's board
-      // display cpu attack message
-      console.log("CPU makes an attack");
-      this.cpuAttack();
+    this.toggleUserTurn(this.userTurn);
+
+    if (this.userTurn) {
+      // Delay the message update for the player's turn
+      setTimeout(() => {
+        this.gameMsg.textContent = `Awaiting orders, Admiral ${this.userName}.`;
+        this.resetAnimation(this.gameMsg);
+      }, 1000);
+    } else {
+      // Delay CPU attack
+      setTimeout(() => {
+        this.cpuAttack();
+      }, 1000);
+    }
+  }
+
+  toggleUserTurn() {
+    if (this.userTurn) {
+      this.cpuBoard.classList.remove("disabled");
+    } else {
+      this.cpuBoard.classList.add("disabled");
     }
   }
 
   // handles events after a cell is clicked for attack
   handleAttack(cell) {
+    if (this.gameEnded) return;
+
     let cellID, cellParentBoard;
+    if (this.userTurn) {
+      this.gameMsg.textContent = `Awaiting orders, Admiral ${this.userName}.`;
+      this.resetAnimation(this.gameMsg);
+    }
 
     // Check if 'cell' is an Event (from an event listener) or a DOM element
     if (cell instanceof Event) {
@@ -225,18 +260,34 @@ export class UI {
     const column = cellID[3];
     const attackedBoard = this.game.getBoard(cellParentBoard.id);
 
-    attackedBoard.receiveAttack(row, column, cellParentBoard);
-
-    this.updateCellUI(row, column, attackedBoard, cellParentBoard.id);
-    if (this.gameOver()) {
-      this.endGame();
+    // Clear previous message and set new game message
+    if (cell instanceof Event) {
+      this.gameMsg.textContent = "Launching attack...";
+    } else if (cell instanceof HTMLElement) {
+      this.gameMsg.textContent = "CPU launching attack...";
     }
-    this.updateTurn();
+
+    this.resetAnimation(this.gameMsg);
+
+    // Delay for 1 second before executing the attack logic
+    setTimeout(() => {
+      attackedBoard.receiveAttack(row, column, cellParentBoard);
+      this.updateCellUI(row, column, attackedBoard, cellParentBoard.id);
+
+      // Check if the game is over after the UI is updated
+      if (this.gameOver()) {
+        this.endGame();
+      }
+
+      // Update the turn after the attack and UI update
+      this.updateTurn();
+    }, 1000);
   }
 
   // Update only the affected cell UI
   updateCellUI(row, column, board, boardId) {
     let cellDiv;
+    this.resetAnimation(this.gameMsg);
     if (boardId === "player-one-board") {
       cellDiv = document.getElementById(`u${row}-${column}`);
     } else {
@@ -247,32 +298,71 @@ export class UI {
 
     if (attackType === "hit") {
       cellDiv.classList.add("hit-cell"); // Add appropriate class
+
+      this.gameMsg.textContent = "Ship hit!";
+      this.resetAnimation(this.gameMsg);
     } else if (attackType === "missed") {
       cellDiv.classList.add("missed-cell"); // Add appropriate class
+
+      this.gameMsg.textContent = "...and attack misses.";
+      this.resetAnimation(this.gameMsg);
     }
+
+    const hitElem = board.grid[row][column];
+    console.log("lemado", board.grid[row][column]);
+    if (hitElem !== null) {
+      if (hitElem.isSunk()) {
+        this.gameMsg.textContent = `${hitElem.name} sunk.`;
+      }
+    }
+  }
+  resetAnimation(element) {
+    // Remove the class that triggers the animation
+    element.style.animation = "none";
+
+    // Force a reflow to restart the animation
+    element.offsetHeight; // This line forces reflow/repaint in the browser
+
+    // Reapply the animation class
+    element.style.animation = null;
   }
 
   updateUI() {
-    console.log("Rendering boards...");
     this.renderBoard(this.game.playerOneBoard, "player-one-board");
     this.renderBoard(this.game.playerTwoBoard, "player-two-board");
-    console.log("Boards rendered.");
     this.domElements();
     //this.setupEventListeners();
   }
 
   gameOver() {
-    const playerOneShips = Object.values(this.game.playerOne.ships);
-    const playerTwoShips = Object.values(this.game.playerTwo.ships);
-
-    const allPlayerOneShipsSunk = playerOneShips.every((ship) => ship.isSunk());
-    const allPlayerTwoShipsSunk = playerTwoShips.every((ship) => ship.isSunk());
+    const allPlayerOneShipsSunk = this.game.checkAllShipsSunk(
+      this.game.playerOne
+    );
+    const allPlayerTwoShipsSunk = this.game.checkAllShipsSunk(
+      this.game.playerTwo
+    );
 
     return allPlayerOneShipsSunk || allPlayerTwoShipsSunk;
   }
 
   // terminate game: disable all pointer events and display button to replay the game
   endGame() {
-    console.log("game over");
+    if (this.gameEnded) return; // Prevent multiple endGame executions
+
+    this.gameEnded = true; // Set flag to mark game as ended
+    this.gameMsg.textContent = "Game Over!";
+    const page = document.getElementById("game-page");
+
+    // Check if the button already exists to avoid appending it multiple times
+    let playAgainBtn = document.getElementById("play-again");
+    if (!playAgainBtn) {
+      playAgainBtn = document.createElement("button");
+      playAgainBtn.id = "play-again";
+      playAgainBtn.textContent = "Play Again";
+      playAgainBtn.addEventListener("click", () => {
+        window.location.reload();
+      });
+      page.appendChild(playAgainBtn);
+    }
   }
 }
