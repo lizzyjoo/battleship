@@ -68,16 +68,16 @@ export class Gameboard {
         const className = `${hitElem.name}-svg`;
         const shipImage = cellParentBoard.querySelector(`img.${className}`);
         shipImage.classList.add("sunk-ship");
+        shipImage.classList.remove("cpu-hidden");
       }
     } else {
       this.attacksMade[row][column] = "missed";
       this.storeMissed(row, column);
     }
   }
-  storeAttack(attack) {}
+
   storeMissed(row, column) {
     const missedCoordinate = [row, column];
     this.missed.push(missedCoordinate);
   }
-  allSunk() {}
 }
