@@ -106,7 +106,8 @@ form {
 }
 
 #name-submit,
-#orientation-btn {
+#orientation-btn,
+#play-again {
   background-color: #111827;
   border: 1px solid transparent;
   border-radius: 0.75rem;
@@ -131,11 +132,13 @@ form {
 }
 
 #name-submit:hover,
+#play-again:hover,
 #orientation-btn:hover {
   background-color: #374151;
 }
 
 #name-submit:focus,
+#play-again:focus,
 #orientation-btn:focus {
   box-shadow: none;
   outline: 2px solid transparent;
@@ -144,7 +147,8 @@ form {
 
 @media (min-width: 768px) {
   #name-submit,
-  #orientation-btn {
+  #orientation-btn,
+  #play-again {
     padding: 0.75rem 1.5rem;
   }
 }
@@ -185,6 +189,7 @@ body.loaded .battleship-img {
   justify-content: center;
   align-items: center;
   gap: 20px;
+  width: 100%;
 }
 .gameboard {
   display: grid;
@@ -210,7 +215,30 @@ body.loaded .battleship-img {
 #player-two-board .cell:hover {
   background-color: #96180a;
 }
-/* game page */
+
+.highlight {
+  background-color: rgba(130, 221, 156, 0.928);
+}
+
+.invalid-highlight {
+  background-color: red;
+  pointer-events: none;
+}
+
+.ship-placed {
+  pointer-events: none;
+  background-color: rgb(4, 28, 60);
+}
+
+/* game play page */
+#game-container {
+  width: 100%;
+  height: 100%;
+}
+#game-page {
+  width: 100%;
+}
+/* Game Message animations */
 .gameMsg {
   background-color: none;
   text-align: center;
@@ -221,7 +249,7 @@ body.loaded .battleship-img {
   white-space: nowrap; /* Keeps the content on a single line */
   margin: 0 auto; /* Gives that scrolling effect as the typing happens */
   letter-spacing: 0.15em; /* Adjust as needed */
-  animation: typing 3.5s steps(40, end), step-start infinite;
+  animation: typing 2s steps(40, end), step-start infinite;
 }
 
 /* The typing effect */
@@ -234,6 +262,7 @@ body.loaded .battleship-img {
   }
 }
 
+/* ship svg elements and divs */
 .svg-div {
   display: flex;
   justify-content: center;
@@ -249,8 +278,8 @@ body.loaded .battleship-img {
 }
 
 .ship-svg {
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
   object-fit: cover;
 }
 
@@ -264,11 +293,16 @@ body.loaded .battleship-img {
   transform-origin: center;
 }
 
+.cpu-hidden {
+  display: none;
+}
+
 .sunk-ship {
   filter: grayscale(100%) brightness(0) sepia(100%) hue-rotate(180deg)
     saturate(10000%);
 }
 
+/* cell clicking and UI handling */
 .clicked {
   pointer-events: none;
 }
@@ -287,24 +321,19 @@ body.loaded .battleship-img {
   background-image: url("./assets/red-circle.svg");
 }
 
-.highlight {
-  background-color: rgba(130, 221, 156, 0.928);
-}
-
-.invalid-highlight {
-  background-color: red;
-  pointer-events: none;
-}
-
-.ship-placed {
-  pointer-events: none;
-  background-color: rgb(4, 28, 60);
-}
-
 #player-one-board {
+  pointer-events: none;
+}
+.disabled {
   pointer-events: none;
 }
 
 #player-one-board,
 #player-two-board {
+  width: 600px;
+  height: 600px;
+}
+
+#play-again {
+  margin: 20px;
 }
