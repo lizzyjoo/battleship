@@ -1,11 +1,9 @@
 import { Gameboard } from "./Gameboard.js";
 import { Player } from "./Player.js";
 import { Ship } from "./Ship.js";
-import { ships } from "./setShip.js";
 
 export class Game {
   constructor(ships, userName) {
-    console.log(ships, "ships passed into the Game class");
     this.userName = userName;
     this.ships = ships;
     this.playerOneBoard = new Gameboard(10);
@@ -25,8 +23,6 @@ export class Game {
         );
       }
     }
-
-    console.log("player one ships: ", this.playerOneShips);
 
     // Create ships for player two: random for computer
     this.playerTwoShips = {
@@ -68,7 +64,6 @@ export class Game {
 
     // Randomized placement for player two
     this.loadShipsForPlacement(this.playerTwoBoard, this.playerTwoShips);
-    console.log("calling loadships on CPU ships");
   }
 
   getBoard(elemID) {
@@ -81,7 +76,6 @@ export class Game {
 
   // prepare ship for placement on board
   loadShipsForPlacement(board, ships) {
-    console.log("loadShips??", board);
     for (const shipName in ships) {
       const ship = ships[shipName];
       if (ship && ship.start) {
@@ -92,11 +86,13 @@ export class Game {
   }
 
   checkAllShipsSunk(player) {
-    if (!player.ships || !Array.isArray(player.ships)) {
+    if (!player.ships || typeof player.ships !== "object") {
       console.error("Player's ships are not properly initialized.");
       return false;
     }
-    return player.ships.every((ship) => ship.isSunk());
+
+    const shipsArray = Object.values(player.ships);
+    return shipsArray.every((ship) => ship.isSunk());
   }
   getRandomCoordinatesAndOrientation(boardSize, shipLength) {
     let isValid = false;
