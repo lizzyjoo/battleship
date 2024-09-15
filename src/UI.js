@@ -28,6 +28,12 @@ export class UI {
     pageContent.className = "page-content";
     pageContent.id = "game-page";
 
+    // game logo
+    const gameLogo = document.createElement("div");
+    gameLogo.className = "logo";
+    gameLogo.id = "game-page-logo";
+    gameLogo.textContent = "BATTLESHIP";
+    pageContent.appendChild(gameLogo);
     // game message
     const gameMsg = document.createElement("div");
     gameMsg.classList.add("gameMsg");
@@ -68,6 +74,7 @@ export class UI {
     boards.appendChild(cpuDiv);
 
     pageContent.appendChild(boards);
+
     container.appendChild(pageContent);
   }
   domElements() {
