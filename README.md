@@ -1,6 +1,17 @@
+## Table of Contents
+
+- [Project Description](#project-description)
+- [How to Play](#how-to-play)
+- [Credits](#credits)
+- [Bug Fix Plans](#bug-fix-plans)
+
 # Project: Battleship
 
-In this project, I implement the classic game "Battleship" using Javascript and HTML/CSS. This project was inspired by The Odin Project open-source course (https://www.theodinproject.com/lessons/node-path-javascript-battleship).
+This project implements the classic game "Battleship" using JavaScript, HTML, and CSS. Inspired by The Odin Project’s open-source course, it focuses on applying object-oriented programming principles and creating a complex UI with CSS animations and transitions.
+
+The game allows users to play against the computer. The objective is to sink all the opponent's ships. The game includes a replay option once a player wins.
+
+The project emphasizes the use of Test Driven Development (TDD), with Jest used for testing the `setName` module as of 09/15/2024.
 
 An explanation of Battleship, in which I used to implement the game flow logic, can be found here: https://en.wikipedia.org/wiki/Battleship_(game)
 
@@ -17,29 +28,32 @@ Another important goal was to practice Test Driven Development. As of now (09/15
    ![Set-name Page Screenshot](./src/assets/name-input-page.png)
 
 2. Then, the user will be able to place ships on the board either horizontally or vertically.
-   ![Set-name Page Screenshot](./src/assets/set-ship-page.png)
+   ![Set-ship Page Screenshot](./src/assets/set-ship-page.png)
 
 3. Finally, the game begins, with the user and the cpu taking turns to attack each other.
-   ![Set-name Page Screenshot](./src/assets/game-play-page.png)
+   ![Game Play Page Screenshot](./src/assets/game-play-page.png)
 
-## credits
+## Credits
 
-### fonts
+### Fonts
 
-- Logo font: Rubik Pixel
-  https://fonts.google.com/share?selection.family=Rubik+Pixels
-- Body font: Handjet
-  https://fonts.google.com/share?selection.family=Handjet:wght@100..900
+- **Logo Font:** Rubik Pixel  
+  [Rubik Pixel on Google Fonts](https://fonts.google.com/share?selection.family=Rubik+Pixels)
+- **Body Font:** Handjet  
+  [Handjet on Google Fonts](https://fonts.google.com/share?selection.family=Handjet:wght@100..900)
 
-### assets: svgs, battleship illustration
+### Assets
 
-- submarine art, found on the 'set name' page:
-  https://www.freepik.com/free-vector/hand-drawn-retro-submarine_2783078.htm#fromView=search&page=1&position=28&uuid=2cf158bf-c18e-47f1-b34b-284020cfa226
+- **Submarine Art:**  
+  [Freepik Submarine Art](https://www.freepik.com/free-vector/hand-drawn-retro-submarine_2783078.htm#fromView=search&page=1&position=28&uuid=2cf158bf-c18e-47f1-b34b-284020cfa226)
 
-- ship icons:
-  https://www.freepik.com/icon/cruiser_11434227#fromView=families&page=1&position=0&uuid=5555eca2-7ee1-4986-a03f-9119eeb7bf90
+- **Ship Icons:**  
+  [Freepik Ship Icons](https://www.freepik.com/icon/cruiser_11434227#fromView=families&page=1&position=0&uuid=5555eca2-7ee1-4986-a03f-9119eeb7bf90)
 
-## Bug fix plans
+## Bug Fix Plans
 
-- the svg formatting on the board is not as ideal; some of them cross the grid.
-- currently (9/15/24), the computer is only capable of making random attacks, but I plan to make the attack logic more sophisticated, letting it attack consecutive cells from if it had made a successful attack to a user's ship..
+- **SVG Formatting Issues:**  
+  The current SVG formatting on the game board is suboptimal, causing some icons to overlap the grid. I plan to adjust the SVG sizes and positioning to ensure they fit properly within the grid cells.
+
+- **Enhanced Computer AI:**  
+  Currently, the computer makes random attacks. Future updates will improve the AI to make consecutive attacks when a hit is detected, increasing the strategic depth of the game.
