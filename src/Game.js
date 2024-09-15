@@ -125,6 +125,9 @@ export class Game {
     return { x, y, compOrientation };
   }
 
+  // computer attack strategy
+  // initiate attack on a random coordinate until it hits a cell with a ship
+  // need to save previous attacks
   randomAttack() {
     let isValid = false;
     // pick a random coordinate
@@ -133,7 +136,7 @@ export class Game {
     while (!isValid) {
       randomRow = Math.floor(Math.random() * this.playerOneBoard.size);
       randomColumn = Math.floor(Math.random() * this.playerOneBoard.size);
-
+      // case 1: the cell is null (no attack has been made)
       const playerOneAttacksMadeGrid = this.playerOneBoard.attacksMade;
       isValid = playerOneAttacksMadeGrid[randomRow][randomColumn] === null;
     }
