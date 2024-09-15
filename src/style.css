@@ -16,9 +16,10 @@ body {
   animation: gradient 8s ease-in infinite;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  margin: 0;
   padding: 0;
   align-items: center;
+  min-height: 100vh;
 }
 
 .container {
@@ -162,8 +163,8 @@ form {
   position: absolute;
   top: 2px;
   background-image: url("./assets/submarine-art.png");
-  width: 1000px;
-  height: 1000px;
+  width: 900px;
+  height: 900px;
   background-size: cover;
   transition: opacity 2s ease-in-out 2s;
 }
@@ -196,6 +197,7 @@ body.loaded .battleship-img {
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
   position: relative;
+  box-shadow: 0 -5px 3px -3px black, 0 5px 3px -3px black;
 }
 
 .cell {
@@ -353,9 +355,27 @@ body.loaded .battleship-img {
 #player-two-board {
   width: 600px;
   height: 600px;
-  box-shadow: 0 -5px 3px -3px black, 0 5px 3px -3px black;
 }
 
 #play-again {
   margin: 20px;
+}
+
+/* footer */
+.footer {
+  display: flex;
+  justify-content: center;
+  background-color: rgb(4, 28, 60);
+  width: 100vw;
+  margin: 0 auto;
+  margin-top: auto;
+  margin-bottom: 0;
+  font-size: 28px;
+  color: #fff;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+a {
+  text-decoration: none;
+  color: #fff;
 }
