@@ -7,6 +7,8 @@
 
 # Project: Battleship
 
+Live Preview: https://lizzyjoo.github.io/battleship/
+
 This project implements the classic game "Battleship" using JavaScript, HTML, and CSS. Inspired by The Odin Project’s open-source course, it focuses on applying object-oriented programming principles and creating a complex UI with CSS animations and transitions.
 
 The game allows users to play against the computer. The objective is to sink all the opponent's ships. The game includes a replay option once a player wins.
