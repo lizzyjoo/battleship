@@ -216,7 +216,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \***********************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("module.exports = __webpack_require__.p + \"3282019e37562c51e199.svg\";\n\n//# sourceURL=webpack://battleship/./src/assets/battleship.svg?");
+eval("module.exports = __webpack_require__.p + \"467ee273070a087189d4.svg\";\n\n//# sourceURL=webpack://battleship/./src/assets/battleship.svg?");
 
 /***/ }),
 
@@ -226,7 +226,7 @@ eval("module.exports = __webpack_require__.p + \"3282019e37562c51e199.svg\";\n\n
   \********************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("module.exports = __webpack_require__.p + \"263fd2d8f4a5ca1e23d9.svg\";\n\n//# sourceURL=webpack://battleship/./src/assets/carrier.svg?");
+eval("module.exports = __webpack_require__.p + \"8bd2e383a533c0edda3f.svg\";\n\n//# sourceURL=webpack://battleship/./src/assets/carrier.svg?");
 
 /***/ }),
 
@@ -236,7 +236,7 @@ eval("module.exports = __webpack_require__.p + \"263fd2d8f4a5ca1e23d9.svg\";\n\n
   \**********************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("module.exports = __webpack_require__.p + \"3349fcc873ba398263be.svg\";\n\n//# sourceURL=webpack://battleship/./src/assets/destroyer.svg?");
+eval("module.exports = __webpack_require__.p + \"56a2b73fd050d6781f33.svg\";\n\n//# sourceURL=webpack://battleship/./src/assets/destroyer.svg?");
 
 /***/ }),
 
@@ -246,7 +246,7 @@ eval("module.exports = __webpack_require__.p + \"3349fcc873ba398263be.svg\";\n\n
   \*******************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("module.exports = __webpack_require__.p + \"84082ecc9a74948790b6.svg\";\n\n//# sourceURL=webpack://battleship/./src/assets/patrol.svg?");
+eval("module.exports = __webpack_require__.p + \"8a93276ccd5df3a7dab1.svg\";\n\n//# sourceURL=webpack://battleship/./src/assets/patrol.svg?");
 
 /***/ }),
 
@@ -256,7 +256,7 @@ eval("module.exports = __webpack_require__.p + \"84082ecc9a74948790b6.svg\";\n\n
   \***********************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("module.exports = __webpack_require__.p + \"e93481490058afc99385.svg\";\n\n//# sourceURL=webpack://battleship/./src/assets/red-circle.svg?");
+eval("module.exports = __webpack_require__.p + \"800f258b5a391bef7743.svg\";\n\n//# sourceURL=webpack://battleship/./src/assets/red-circle.svg?");
 
 /***/ }),
 
@@ -266,7 +266,7 @@ eval("module.exports = __webpack_require__.p + \"e93481490058afc99385.svg\";\n\n
   \**************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("module.exports = __webpack_require__.p + \"6b12013697f12e45825d.png\";\n\n//# sourceURL=webpack://battleship/./src/assets/submarine-art.png?");
+eval("module.exports = __webpack_require__.p + \"9b21b9fc1aae7a4a7a39.png\";\n\n//# sourceURL=webpack://battleship/./src/assets/submarine-art.png?");
 
 /***/ }),
 
@@ -276,7 +276,7 @@ eval("module.exports = __webpack_require__.p + \"6b12013697f12e45825d.png\";\n\n
   \**********************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("module.exports = __webpack_require__.p + \"41bfb84727d81d9646ce.svg\";\n\n//# sourceURL=webpack://battleship/./src/assets/submarine.svg?");
+eval("module.exports = __webpack_require__.p + \"0dae6204e583e4314d8c.svg\";\n\n//# sourceURL=webpack://battleship/./src/assets/submarine.svg?");
 
 /***/ }),
 
@@ -286,7 +286,7 @@ eval("module.exports = __webpack_require__.p + \"41bfb84727d81d9646ce.svg\";\n\n
   \*************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("module.exports = __webpack_require__.p + \"75efd2eb463a714020db.svg\";\n\n//# sourceURL=webpack://battleship/./src/assets/white-circle.svg?");
+eval("module.exports = __webpack_require__.p + \"a5cf453cf026c5ac9a48.svg\";\n\n//# sourceURL=webpack://battleship/./src/assets/white-circle.svg?");
 
 /***/ })
 
