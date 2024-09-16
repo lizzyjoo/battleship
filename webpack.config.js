@@ -19,6 +19,7 @@ module.exports = {
       {
         test: /\.(png|jpe?g|gif|svg)$/i, // Combine image and SVG tests
         type: "asset/resource", // Use Webpack's built-in asset module for all image types
+        loader: "file-loader",
       },
       {
         test: /\.css$/,
